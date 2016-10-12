@@ -1,0 +1,30 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "impliedStrict": true,
+            "experimentalObjectRestSpread": true,
+            "jsx": true,
+            "classes": true
+        }
+    },
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "rules": {
+        "semi": ["warn", "always", {"omitLastInOneLineBlock": true}],
+        "quotes": "warn",
+        "indent": ["warn", 4],
+        "no-console": "off",
+        "react/jsx-uses-react": "warn",
+        "react/jsx-uses-vars": "warn",
+        "react/react-in-jsx-scope": "error"
+    },
+    "plugins": [
+        "react"
+    ]
+}
