@@ -14,7 +14,7 @@ const Header = ({user}) => {
             </NavDropdown>
         );
     } else {
-        userDrop = "Loading...";
+        userDrop = <Navbar.Text>Loading...</Navbar.Text>;
     }
 
     return (

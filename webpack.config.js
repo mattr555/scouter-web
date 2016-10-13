@@ -2,6 +2,8 @@ var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+console.log("ENVIRONMENT: ", process.env.ENV);
+
 module.exports = {
     entry: "./src/index.js",
     output: { path: path.resolve(__dirname, "build"), filename: "bundle.js" },
@@ -28,7 +30,13 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
-        publicPath: "/build/"
+        publicPath: "/build/",
+        proxy: [{
+            path: "/api/**",
+            target: "http://patrick:8000",
+            secure: false,
+            changeOrigin: true
+        }]
     },
     plugins: [
         new ExtractTextPlugin("style.css")
