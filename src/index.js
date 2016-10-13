@@ -11,7 +11,7 @@ import App from "./components/App";
 import TeamPage from "./components/TeamPage";
 import FourOhFour from "./components/FourOhFour";
 
-import {requireAuth} from "./util";
+import {requireAuth, capitalizeTeam} from "./util";
 
 
 ReactDOM.render(
@@ -21,7 +21,7 @@ ReactDOM.render(
             <Route path='/logout' component={Logout}/>
             <Route path='/' component={App} onEnter={requireAuth}>
                 <IndexRoute component={Home} />
-                <Route path='team/:id' component={TeamPage} />
+                <Route path='team/:id' component={TeamPage} onEnter={capitalizeTeam} />
             </Route>
             <Route path='*' component={FourOhFour} />
         </Router>

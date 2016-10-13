@@ -41,4 +41,14 @@ const requireAuth = (nextState, replace) => {
     }
 };
 
-export {api, requireAuth};
+const capitalizeTeam = (nextState, replace) => {
+    const {pathname} = nextState.location;
+    let pathList = nextState.location.pathname.split("/");
+    pathList[2] = pathList[2].toUpperCase();
+    const newName = pathList.join("/");
+    if (newName !== pathname){
+        replace(pathList.join("/"));
+    }
+};
+
+export {api, requireAuth, capitalizeTeam};
