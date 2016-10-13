@@ -22,10 +22,12 @@ class TeamPage extends React.Component {
     }
 
     render() {
-        if (typeof this.props.team === "undefined") return <span>Loading...</span>;
+        const {team} = this.props;
+
+        if (typeof team === "undefined") return <span>Loading...</span>;
         return <div>
-            <h3>{this.props.team.license}</h3>
-            {this.props.team.name}
+            <h3>{team.license}</h3>
+            {team.name}
         </div>;
     }
 }

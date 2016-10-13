@@ -1,9 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Navbar, Nav, NavDropdown, MenuItem} from "react-bootstrap";
-import {Link} from "react-router";
-import {LinkContainer} from "react-router-bootstrap";
 import {getUser} from "../ducks/user";
+import Header from "./Header";
 import Message from "./Message";
 
 class App extends React.Component {
@@ -21,18 +19,7 @@ class App extends React.Component {
     }
 
     render() {
-        var userDrop, messages;
-        if (this.props.user) {
-            userDrop = (
-                <NavDropdown eventKey={1} title={this.props.user.username || "Loading..."} id="user-dropdown">
-                    <LinkContainer to="/logout">
-                        <MenuItem>Logout</MenuItem>
-                    </LinkContainer>
-                </NavDropdown>
-            );
-        } else {
-            userDrop = "Loading...";
-        }
+        var messages;
 
         if (this.props.messages){
             messages = (
@@ -44,19 +31,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <Navbar>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <Link to="/">Scouter Web Client</Link>
-                        </Navbar.Brand>
-                        <Navbar.Toggle />
-                    </Navbar.Header>
-                    <Navbar.Collapse>
-                        <Nav pullRight>
-                            {userDrop}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+                <Header user={this.props.user}/>
                 <div className="container">
                     {messages}
                     {this.props.children}
