@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Modal, Glyphicon, FormGroup, FormControl} from "react-bootstrap";
+import {Button, Modal, Glyphicon, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 
 class AddNoteForm extends React.Component {
     state = {open: false, form: {body: ""}}
@@ -24,17 +24,19 @@ class AddNoteForm extends React.Component {
     }
 
     render(){
+        //TODO: extract form out
         return <div>
             <Button bsStyle="success" onClick={this.openModal}>
                 <Glyphicon glyph="plus" /> Add New Note
             </Button>
             <Modal show={this.state.open} onHide={this.closeModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Hi</Modal.Title>
+                    <Modal.Title>New Note</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form id="addNoteForm" onSubmit={this.submit}>
                         <FormGroup controlId="note_body">
+                            <ControlLabel>Note body</ControlLabel>
                             <FormControl componentClass="textarea" value={this.state.form.body} name="body" onChange={this.onChange} />
                         </FormGroup>
                     </form>

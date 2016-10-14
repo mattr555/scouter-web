@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {getTeam} from "../ducks/teams";
+import {addNote, deleteNote} from "../ducks/notes";
 import {replace} from "react-router-redux";
 
 import NoteList from "./NoteList";
@@ -51,12 +52,24 @@ const mapStateToProps = ({entities}, ownProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-    getTeam: () => dispatch(getTeam(ownProps.params.id)),
-    notFound: () => dispatch(replace("/404")),
-    //TODO: duck for notes
-    onNoteAdd: (note) => console.log(note),
-    onNoteDelete: (id) => console.log(id)
-});
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const _getTeam = () => {
+        return dispatch(getTeam(ownProps.params.id));
+    };
+
+    return {
+        getTeam: _getTeam,
+        notFound: () => dispatch(replace("/404")),
+        onNoteAdd: (note) => {
+            return dispatch(addNote({...note, team: ownProps.params.id}))
+                .then(_getTeam);
+
+        },
+        onNoteDelete: (id) => {
+            return dispatch(deleteNote(id))
+                .then(_getTeam);
+        }
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamPage);

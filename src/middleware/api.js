@@ -51,7 +51,7 @@ export const apiMiddleware = store => next => action => {
             if (schema) return normalize(response.data, schema);
             return response.data;
         })
-        .then(response => next(actionWith({type: successType, response})))
+        .then(response => {console.log(response); return next(actionWith({type: successType, response}))})
         .catch(error => {
             next(actionWith({type: failureType, error}));
             throw error;

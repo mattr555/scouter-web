@@ -1,9 +1,9 @@
 import React from "react";
 import Note from "./Note";
 
-const NoteList = ({notes}) => {
+const NoteList = ({notes, onDelete}) => {
     const note = (note) => (
-        <Note note={note} key={note.id} onDelete={(id) => console.log(id)}></Note>
+        <Note note={note} key={note.id} onDelete={onDelete}></Note>
     );
 
     var noteElems = notes.map(note);
@@ -12,7 +12,8 @@ const NoteList = ({notes}) => {
 };
 
 NoteList.propTypes = {
-    notes: React.PropTypes.array
+    notes: React.PropTypes.array,
+    onDelete: React.PropTypes.func
 };
 
 export default NoteList;
