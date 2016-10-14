@@ -3,11 +3,17 @@ import {connect} from "react-redux";
 import {getTeam} from "../ducks/teams";
 import {replace} from "react-router-redux";
 
+import NoteList from "./NoteList";
+import AddNoteForm from "./AddNoteForm";
+
 class TeamPage extends React.Component {
     static propTypes = {
         team: React.PropTypes.object,
+        notes: React.PropTypes.array,
         getTeam: React.PropTypes.func,
-        notFound: React.PropTypes.func
+        notFound: React.PropTypes.func,
+        onNoteAdd: React.PropTypes.func,
+        onNoteDelete: React.PropTypes.func
     };
 
     componentDidMount() {
@@ -22,23 +28,35 @@ class TeamPage extends React.Component {
     }
 
     render() {
-        const {team} = this.props;
+        const {team, notes, onNoteAdd, onNoteDelete} = this.props;
 
         if (typeof team === "undefined") return <span>Loading...</span>;
         return <div>
             <h3>{team.license}</h3>
             {team.name}
+            <AddNoteForm onSubmit={onNoteAdd}/>
+            <NoteList notes={notes} onDelete={onNoteDelete}/>
         </div>;
     }
 }
 
-const mapStateToProps = ({entities}, ownProps) => ({
-    team: entities.team[ownProps.params.id],
-});
+const mapStateToProps = ({entities}, ownProps) => {
+    var team = entities.team[ownProps.params.id], notes;
+    if (team) {
+        notes = team.notes.map((i) => entities.note[i]);
+    }
+    return {
+        team: team,
+        notes: notes
+    };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     getTeam: () => dispatch(getTeam(ownProps.params.id)),
-    notFound: () => dispatch(replace("/404"))
+    notFound: () => dispatch(replace("/404")),
+    //TODO: duck for notes
+    onNoteAdd: (note) => console.log(note),
+    onNoteDelete: (id) => console.log(id)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamPage);

@@ -1,5 +1,5 @@
 {
-  "name": "react-todo",
+  "name": "scouter-web",
   "version": "1.0.0",
   "description": "fuck",
   "main": "index.js",
@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.14.0",
     "lodash": "^4.16.4",
+    "moment": "^2.15.1",
     "normalizr": "^2.2.1",
     "qs": "^6.2.1",
     "react": "^15.3.2",
