@@ -2,23 +2,20 @@ import React from "react";
 import {Panel, Button} from "react-bootstrap";
 import moment from "moment";
 
-class Note extends React.Component {
-    static propTypes = {
-        note: React.PropTypes.object,
-        onDelete: React.PropTypes.func
-    }
+const Note = ({note, onDelete}) => {
+    const deleteNote = () => {
+        onDelete(note.id);
+    };
 
-    deleteNote = () => {
-        this.props.onDelete(this.props.note.id);
-    }
+    return <Panel header={moment(note.created).fromNow()}>
+        <div>{note.body}</div>
+        <Button bsSize="small" bsStyle="danger" onClick={deleteNote}>Delete</Button>
+    </Panel>;
+};
 
-    render() {
-        const {note} = this.props;
-        return <Panel header={moment(note.created).fromNow()}>
-            <div>{note.body}</div>
-            <Button bsSize="small" bsStyle="danger" onClick={this.deleteNote}>Delete</Button>
-        </Panel>;
-    }
-}
+Note.propTypes = {
+    note: React.PropTypes.object,
+    onDelete: React.PropTypes.func
+};
 
 export default Note;
