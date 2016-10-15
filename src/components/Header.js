@@ -8,6 +8,9 @@ const Header = ({user}) => {
     if (user) {
         userDrop = (
             <NavDropdown eventKey={1} title={user.username || "Loading..."} id="user-dropdown">
+                <LinkContainer to="/settings">
+                    <MenuItem>Settings</MenuItem>
+                </LinkContainer>
                 <LinkContainer to="/logout">
                     <MenuItem>Logout</MenuItem>
                 </LinkContainer>

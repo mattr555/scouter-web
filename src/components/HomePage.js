@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {getTeams} from "../ducks/teams";
 import TeamList from "./TeamList";
 
-class Home extends React.Component {
+class HomePage extends React.Component {
     static propTypes = {
         teams: React.PropTypes.array,
         getTeams: React.PropTypes.func
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch) => ({
     getTeams: () => dispatch(getTeams())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
