@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {addMessage} from "../ducks/messages";
+import {addMessage} from "ducks/messages";
 import {replace} from "react-router-redux";
 
 

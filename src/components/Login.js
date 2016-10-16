@@ -2,9 +2,9 @@ import React from "react";
 import {FormGroup, FormControl, Button, Alert} from "react-bootstrap";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
-import {login} from "../ducks/auth";
+import {login} from "ducks/auth";
 
-require("../style/login.scss");
+require("style/login.scss");
 
 class Login extends React.Component {
     static propTypes = {

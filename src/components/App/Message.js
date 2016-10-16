@@ -1,7 +1,7 @@
 import React from "react";
 import {Alert} from "react-bootstrap";
 import {connect} from "react-redux";
-import {closeMessage} from "../ducks/messages";
+import {closeMessage} from "ducks/messages";
 
 class Message extends React.Component {
     static propTypes = {

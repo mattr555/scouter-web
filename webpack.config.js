@@ -40,7 +40,13 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin("style.css")
-    ]
+    ],
+    resolve: {
+        modules: [
+            path.resolve("./src"),
+            path.resolve("./node_modules")
+        ]
+    }
     // plugins: [
     //     new webpack.DefinePlugin({
     //         API_URL: JSON.stringify("http://patrick:8000/api"),

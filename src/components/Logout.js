@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {logout} from "../ducks/auth";
+import {logout} from "ducks/auth";
 import {replace} from "react-router-redux";
 
 class Logout extends React.Component {

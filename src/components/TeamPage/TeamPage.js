@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getTeam} from "../ducks/teams";
-import {addNote, deleteNote} from "../ducks/notes";
+import {getTeam} from "ducks/teams";
+import {addNote, deleteNote} from "ducks/notes";
 import {replace} from "react-router-redux";
 
 import NoteList from "./NoteList";

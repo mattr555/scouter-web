@@ -19,7 +19,6 @@ class AddNoteForm extends React.Component {
     }
 
     onKeyDown = (event) => {
-        console.log("clicked");
         if (event.keyCode === 13 && event.ctrlKey) {
             this.submit(event);
         }

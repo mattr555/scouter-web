@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getUser} from "../ducks/user";
+import {getUser} from "ducks/user";
 import Header from "./Header";
 import Message from "./Message";
 

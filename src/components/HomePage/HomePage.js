@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getTeams} from "../ducks/teams";
+import {getTeams} from "ducks/teams";
 import TeamList from "./TeamList";
 
 class HomePage extends React.Component {
