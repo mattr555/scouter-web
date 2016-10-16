@@ -7,9 +7,15 @@ const Note = ({note, onDelete}) => {
         onDelete(note.id);
     };
 
-    return <Panel header={moment(note.created).fromNow()}>
+    const header = (<div className="clearfix">
+        <div className="pull-left">{moment(note.created).fromNow()}</div>
+        <div className="pull-right">
+            <Button bsSize="xsmall" bsStyle="danger" onClick={deleteNote}>Delete</Button>
+        </div>
+    </div>);
+
+    return <Panel header={header}>
         <div>{note.body}</div>
-        <Button bsSize="small" bsStyle="danger" onClick={deleteNote}>Delete</Button>
     </Panel>;
 };
 

@@ -1,8 +1,9 @@
 import React from "react";
-import {Button, Modal, Glyphicon, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {Button, Modal, Glyphicon, FormGroup, FormControl, ControlLabel, OverlayTrigger, Tooltip} from "react-bootstrap";
 
 class AddNoteForm extends React.Component {
-    state = {open: false, form: {body: ""}}
+    initialState = {open: false, form: {body: ""}}
+    state = this.initialState
 
     static propTypes = {
         onSubmit: React.PropTypes.func
@@ -17,13 +18,23 @@ class AddNoteForm extends React.Component {
         });
     }
 
+    onKeyDown = (event) => {
+        console.log("clicked");
+        if (event.keyCode === 13 && event.ctrlKey) {
+            this.submit(event);
+        }
+    }
+
     submit = (event) => {
         event.preventDefault();
         this.props.onSubmit(this.state.form);
+        this.setState({form: this.initialState.form});
         this.closeModal();
     }
 
     render(){
+        const ctrlTooltip = (<Tooltip id="ctrlTooltip">(Ctrl + Enter)</Tooltip>);
+
         //TODO: extract form out
         return <div>
             <Button bsStyle="success" onClick={this.openModal}>
@@ -37,12 +48,14 @@ class AddNoteForm extends React.Component {
                     <form id="addNoteForm" onSubmit={this.submit}>
                         <FormGroup controlId="note_body">
                             <ControlLabel>Note body</ControlLabel>
-                            <FormControl componentClass="textarea" value={this.state.form.body} name="body" onChange={this.onChange} />
+                            <FormControl componentClass="textarea" value={this.state.form.body} name="body" onChange={this.onChange} onKeyDown={this.onKeyDown} />
                         </FormGroup>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button type="submit" form="addNoteForm" bsStyle="success">Submit</Button>
+                    <OverlayTrigger placement="top" overlay={ctrlTooltip}>
+                        <Button type="submit" form="addNoteForm" bsStyle="success">Submit</Button>
+                    </OverlayTrigger>
                     <Button onClick={this.closeModal}>Close</Button>
                 </Modal.Footer>
             </Modal>
