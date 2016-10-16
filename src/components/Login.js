@@ -19,18 +19,18 @@ class Login extends React.Component {
         password: ""
     }
 
-    // onError = (err) => {
-    //     let {status} = err.response;
-    //     console.log(status);
-    //     if (status === 401) {
-    //         this.setState({error: "Invalid username/password"});
-    //     }
-    // }
+    nextLoc = () => (this.props.location.query.next || "/")
+
+    componentWillMount() {
+        if (this.props.auth.token){
+            this.props.onSuccess(this.nextLoc());
+        }
+    }
 
     onSubmit = (e) => {
         e.preventDefault();
         this.props.onSubmit(this.state.username, this.state.password)
-            .then(() => this.props.onSuccess(this.props.location.query.next || "/"));
+            .then(() => this.props.onSuccess(this.nextLoc()));
         this.setState({password: ""});
     }
 
@@ -39,8 +39,11 @@ class Login extends React.Component {
 
     render() {
         const error = this.props.auth.error;
+        var err_msg;
         if (error && error.response && error.response.status === 401) {
-            var err_msg = <Alert bsStyle="warning">Invalid username/password</Alert>;
+            err_msg = <Alert bsStyle="warning">Invalid username/password</Alert>;
+        } else if (error && error.message) {
+            err_msg = <Alert bsStyle="warning">{error.message}</Alert>;
         }
 
         return (

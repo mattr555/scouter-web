@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 import {API_URL} from "./config";
 import {store} from "./store";
-import {logout} from "./ducks/auth";
+import {logout, authError} from "./ducks/auth";
 import {replace} from "react-router-redux";
 
 const api = axios.create({
@@ -27,8 +27,11 @@ api.interceptors.response.use(
     (err) => {
         const {status} = err.response;
         if (status === 401 || status === 403) {
+            const last = store.getState().routing.locationBeforeTransitions.pathname;
+
             store.dispatch(logout());
-            store.dispatch(replace("/login"));
+            store.dispatch(authError({message: "Your session has expired."}));
+            store.dispatch(replace("/login?next=" + last));
         }
         throw err;
     }

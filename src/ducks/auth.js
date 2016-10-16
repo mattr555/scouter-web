@@ -31,6 +31,7 @@ const login = (username, password) => ({
 });
 
 const logout = () => ({type: LOGOUT});
+const authError = (error) => ({type: LOGIN_FAILURE, error});
 
 export default reducer;
-export {login, logout, LOGOUT};
+export {login, logout, authError, LOGOUT};
