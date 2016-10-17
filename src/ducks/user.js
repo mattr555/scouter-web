@@ -25,4 +25,4 @@ const getUser = () => ({
 });
 
 export default reducer;
-export {getUser};
+export {getUser, GET_USER_SUCCESS};

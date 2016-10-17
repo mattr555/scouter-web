@@ -10,6 +10,7 @@ import user from "../ducks/user";
 import teams from "../ducks/teams";
 import entities from "../ducks/entities";
 import messages from "../ducks/messages";
+import schemaBuilder from "../ducks/schemaBuilder";
 
 const store = createStore(
     combineReducers({
@@ -18,6 +19,7 @@ const store = createStore(
         teams,
         entities,
         messages,
+        schemaBuilder,
         routing: routerReducer
     }),
     loadState(),
