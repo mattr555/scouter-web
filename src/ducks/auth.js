@@ -1,6 +1,7 @@
 import {CLIENT_ID} from "../config";
 import {CALL_API} from "../middleware/api";
 import {asyncReducer} from "./asyncRequest";
+import qs from "qs";
 
 const LOGIN = "LOGIN";
 const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -21,12 +22,13 @@ const login = (username, password) => ({
         types: TYPES,
         method: "post",
         url: "/o/token/",
-        data: {
+        data: qs.stringify({
             client_id: CLIENT_ID,
             grant_type: "password",
             username,
             password
-        }
+        }),
+        headers: {"Content-Type": "application/x-www-form-urlencoded"}
     }
 });
 

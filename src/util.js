@@ -1,18 +1,11 @@
 import axios from "axios";
-import qs from "qs";
 import {API_URL} from "./config";
 import {store} from "./store";
 import {logout, authError} from "./ducks/auth";
 import {replace} from "react-router-redux";
 
 const api = axios.create({
-    baseURL: API_URL,
-    headers: {
-        post: { "Content-Type": "application/x-www-form-urlencoded"}
-    },
-    transformRequest: [function(data){
-        return qs.stringify(data);
-    }]
+    baseURL: API_URL
 });
 
 api.interceptors.request.use((config) => {
