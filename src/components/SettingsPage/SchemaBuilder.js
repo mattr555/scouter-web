@@ -46,8 +46,6 @@ class SchemaBuilder extends React.Component {
     }
 }
 
-const mapStateToProps = ({schemaBuilder}) => ({schema: schemaBuilder});
-
 const mapDispatchToProps = (dispatch) => {
     return {
         onFieldChange: (field) => dispatch(changeField(field)),
@@ -58,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SchemaBuilder);
+export default connect(null, mapDispatchToProps)(SchemaBuilder);

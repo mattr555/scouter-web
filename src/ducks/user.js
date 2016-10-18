@@ -24,5 +24,15 @@ const getUser = () => ({
     }
 });
 
+const updateUser = (data) => ({
+    [CALL_API]: {
+        types: TYPES,
+        schema: Schemas.USER,
+        method: "put",
+        url: "/users/me/",
+        data: data
+    }
+});
+
 export default reducer;
-export {getUser, GET_USER_SUCCESS};
+export {getUser, updateUser, GET_USER_SUCCESS};
