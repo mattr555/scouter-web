@@ -28,16 +28,16 @@ const addNote = (note) => ({
     [CALL_API]: {
         types: [ADD_NOTE, ADD_NOTE_SUCCESS, ADD_NOTE_FAILURE],
         schema: Schemas.NOTE,
-        url: "/notes/",
+        url: `/teams/${note.team}/notes/`,
         method: "post",
         data: note
     }
 });
 
-const deleteNote = (id) => ({
+const deleteNote = (note) => ({
     [CALL_API]: {
         types: [DELETE_NOTE, DELETE_NOTE_SUCCESS, DELETE_NOTE_FAILURE],
-        url: `/notes/${id}/`,
+        url: `/teams/${note.team}/notes/${note.id}/`,
         method: "delete"
     }
 });

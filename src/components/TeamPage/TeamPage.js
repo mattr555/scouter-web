@@ -65,8 +65,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 .then(_getTeam);
 
         },
-        onNoteDelete: (id) => {
-            return dispatch(deleteNote(id))
+        onNoteDelete: (note) => {
+            return dispatch(deleteNote(note))
                 .then(_getTeam);
         }
     };

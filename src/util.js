@@ -19,7 +19,7 @@ api.interceptors.response.use(
     (resp) => resp,
     (err) => {
         const {status} = err.response;
-        if (status === 401 || status === 403) {
+        if (status === 401) {
             const last = store.getState().routing.locationBeforeTransitions.pathname;
 
             store.dispatch(logout());

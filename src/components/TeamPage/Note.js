@@ -4,7 +4,7 @@ import moment from "moment";
 
 const Note = ({note, onDelete}) => {
     const deleteNote = () => {
-        onDelete(note.id);
+        onDelete(note);
     };
 
     const header = (<div className="clearfix">
