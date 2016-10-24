@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {getTeam} from "ducks/teams";
-import {addNote, deleteNote} from "ducks/notes";
+import {addNote, deleteNote, editProps} from "ducks/notes";
 import {replace} from "react-router-redux";
 
 import NoteList from "./NoteList";
@@ -17,7 +17,8 @@ class TeamPage extends React.Component {
         getTeam: React.PropTypes.func,
         notFound: React.PropTypes.func,
         onNoteAdd: React.PropTypes.func,
-        onNoteDelete: React.PropTypes.func
+        onNoteDelete: React.PropTypes.func,
+        onPropsEdit: React.PropTypes.func
     };
 
     componentDidMount() {
@@ -33,7 +34,7 @@ class TeamPage extends React.Component {
     }
 
     render() {
-        const {team, notes, schema, onNoteAdd, onNoteDelete} = this.props;
+        const {team, notes, schema, onNoteAdd, onNoteDelete, onPropsEdit} = this.props;
 
         if (typeof team === "undefined" || typeof schema === "undefined") return <span>Loading...</span>;
         return <div>
@@ -41,7 +42,7 @@ class TeamPage extends React.Component {
             {team.name}
             <br/>
             <PropertiesList teamProps={team.robot_props}/>
-            <EditPropertiesForm schema={schema} teamProps={team.robot_props}/>
+            <EditPropertiesForm schema={schema} teamProps={team.robot_props} onSubmit={onPropsEdit}/>
             <AddNoteForm onSubmit={onNoteAdd}/>
             <NoteList notes={notes} onDelete={onNoteDelete}/>
         </div>;
@@ -75,6 +76,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         onNoteDelete: (note) => {
             return dispatch(deleteNote(note))
+                .then(_getTeam);
+        },
+        onPropsEdit: (props) => {
+            return dispatch(editProps(ownProps.params.id, props))
                 .then(_getTeam);
         }
     };

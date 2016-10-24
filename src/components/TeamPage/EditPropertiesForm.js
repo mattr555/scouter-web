@@ -5,7 +5,8 @@ import {FieldGroup, ModalForm} from "components/common";
 class EditPropertiesForm extends React.Component {
     static propTypes = {
         schema: React.PropTypes.array,
-        teamProps: React.PropTypes.array
+        teamProps: React.PropTypes.array,
+        onSubmit: React.PropTypes.func
     }
 
     state = {form: this.generateForm(this.props)}
@@ -41,7 +42,7 @@ class EditPropertiesForm extends React.Component {
         for (let {name} of schema) {
             finalProps.push({name: name, value: this.state.form[name]});
         }
-        console.log(finalProps);
+        this.props.onSubmit(finalProps);
         this.editModal.closeModal();
     }
 
