@@ -7,7 +7,7 @@ class ModalForm extends React.Component {
         submitTooltip: React.PropTypes.element,
         formId: React.PropTypes.string,
         formTitle: React.PropTypes.string,
-        children: React.PropTypes.element
+        children: React.PropTypes.node
     }
 
     state = {open: false};
