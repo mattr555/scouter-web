@@ -6,11 +6,14 @@ import {replace} from "react-router-redux";
 
 import NoteList from "./NoteList";
 import AddNoteForm from "./AddNoteForm";
+import PropertiesList from "./PropertiesList";
+import EditPropertiesForm from "./EditPropertiesForm";
 
 class TeamPage extends React.Component {
     static propTypes = {
         team: React.PropTypes.object,
         notes: React.PropTypes.array,
+        schema: React.PropTypes.array,
         getTeam: React.PropTypes.func,
         notFound: React.PropTypes.func,
         onNoteAdd: React.PropTypes.func,
@@ -21,34 +24,39 @@ class TeamPage extends React.Component {
         if (typeof this.props.team === "undefined") {
             this.props.getTeam()
                 .catch((err) => {
-                    if (err.response.status === 404){
+                    if (err.response && err.response.status === 404){
                         this.props.notFound();
                     }
+                    throw err;
                 });
         }
     }
 
     render() {
-        const {team, notes, onNoteAdd, onNoteDelete} = this.props;
+        const {team, notes, schema, onNoteAdd, onNoteDelete} = this.props;
 
-        if (typeof team === "undefined") return <span>Loading...</span>;
+        if (typeof team === "undefined" || typeof schema === "undefined") return <span>Loading...</span>;
         return <div>
             <h3>{team.license}</h3>
             {team.name}
+            <br/>
+            <PropertiesList teamProps={team.robot_props}/>
+            <EditPropertiesForm schema={schema} teamProps={team.robot_props}/>
             <AddNoteForm onSubmit={onNoteAdd}/>
             <NoteList notes={notes} onDelete={onNoteDelete}/>
         </div>;
     }
 }
 
-const mapStateToProps = ({entities}, ownProps) => {
+const mapStateToProps = ({entities, schemaBuilder}, ownProps) => {
     var team = entities.team[ownProps.params.id], notes;
     if (team) {
         notes = team.notes.map((i) => entities.note[i]);
     }
     return {
         team: team,
-        notes: notes
+        notes: notes,
+        schema: schemaBuilder
     };
 };
 
