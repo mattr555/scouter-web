@@ -1,6 +1,8 @@
 import React from "react";
-import {Button} from "react-bootstrap";
+import {Button, Radio} from "react-bootstrap";
 import {FieldGroup, ModalForm} from "components/common";
+
+require("style/editPropertiesForm.scss");
 
 class EditPropertiesForm extends React.Component {
     static propTypes = {
@@ -12,7 +14,8 @@ class EditPropertiesForm extends React.Component {
     state = {form: this.generateForm(this.props)}
 
     generateForm(props){
-        const {schema, teamProps} = props;
+        let {schema, teamProps} = props;
+        teamProps = teamProps || [];
         if (schema && teamProps){
             let newForm = {};
             let values = {};
@@ -40,6 +43,7 @@ class EditPropertiesForm extends React.Component {
         const {schema} = this.props;
         let finalProps = [];
         for (let {name} of schema) {
+            // convert map of name: value back to schema array in correct order
             finalProps.push({name: name, value: this.state.form[name]});
         }
         this.props.onSubmit(finalProps);
@@ -52,16 +56,40 @@ class EditPropertiesForm extends React.Component {
         if (this.state.form === null) return <div/>;
 
         const fields = schema.map((s) => {
+            const id = s.name.replace(" ", "_") + "_field";
             if (s.type === "option") {
-                return <span key={s.name}>option stub</span>;
+                return <FieldGroup
+                    id={id}
+                    key={s.name}
+                    label={s.name}
+                    name={s.name}
+                    value={this.state.form[s.name]}
+                    componentClass="select"
+                    onChange={this.onChange}
+                >
+                    <option value=''> - </option>
+                    {s.options.map((o) => <option key={o}>{o}</option>)}
+                </FieldGroup>;
             }
 
             if (s.type === "badgood") {
-                return <span key={s.name}>bad/good stub</span>;
+                return <div key={s.name}>
+                    <label className="block-label">{s.name}</label>
+                    {["Bad", "Meh", "Good"].map((val) => (
+                        <Radio
+                            inline
+                            name={s.name}
+                            value={val}
+                            key={val}
+                            checked={val === this.state.form[s.name]}
+                            onChange={this.onChange}
+                            >{val}</Radio>
+                    ))}
+                </div>;
             }
 
             return <FieldGroup
-                id={s.name.replace(" ", "_") + "_field"}
+                id={id}
                 key={s.name}
                 label={s.name}
                 name={s.name}
@@ -78,7 +106,7 @@ class EditPropertiesForm extends React.Component {
                 onSubmit={this.onSubmit}
                 formId="editPropertiesForm"
                 formTitle="Edit Robot Properties"
-                >
+            >
                 {fields}
             </ModalForm>
         </div>;
