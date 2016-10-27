@@ -5,6 +5,7 @@ import SchemaBuilderRow from "./SchemaBuilderRow";
 import {changeField, deleteField, addField, moveFieldUp, moveFieldDown} from "ducks/schemaBuilder";
 
 class SchemaBuilder extends React.Component {
+    // TODO: convert this to redux-form with FieldArray (should make schemaBuilder duck obsolete)
     static propTypes = {
         schema: React.PropTypes.array,
         onFieldChange: React.PropTypes.func,

@@ -7,6 +7,7 @@ import {login} from "ducks/auth";
 require("style/login.scss");
 
 class Login extends React.Component {
+    // TODO: convert to redux-form
     static propTypes = {
         onSubmit: React.PropTypes.func,
         onSuccess: React.PropTypes.func,

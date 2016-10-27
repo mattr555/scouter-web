@@ -1,19 +1,13 @@
 import React from "react";
 import {Button, Glyphicon, Tooltip} from "react-bootstrap";
+import {Field, reduxForm} from "redux-form";
 import {FieldGroup, ModalForm} from "components/common";
 
 class AddNoteForm extends React.Component {
-    initialState = {form: {body: ""}}
-    state = this.initialState
-
     static propTypes = {
-        onSubmit: React.PropTypes.func
-    }
-
-    onChange = (event) => {
-        this.setState({
-            form: {...this.state.form, [event.target.name]: event.target.value}
-        });
+        onSubmit: React.PropTypes.func,
+        handleSubmit: React.PropTypes.func,
+        reset: React.PropTypes.func
     }
 
     onKeyDown = (event) => {
@@ -24,9 +18,11 @@ class AddNoteForm extends React.Component {
 
     submit = (event) => {
         event.preventDefault();
-        this.props.onSubmit(this.state.form);
-        this.setState({form: this.initialState.form});
-        this.addNoteModal.closeModal();
+        this.props.handleSubmit(event).then(() => {
+            this.addNoteModal.closeModal();
+            this.props.reset();
+        });
+
     }
 
     render(){
@@ -43,18 +39,18 @@ class AddNoteForm extends React.Component {
                 formTitle="New Note"
                 ref={(e) => this.addNoteModal = e}
                 >
-                <FieldGroup
+                <Field
+                    component={FieldGroup}
                     id="note_body"
                     label="Note body"
                     componentClass="textarea"
-                    value={this.state.form.body}
                     name="body"
-                    onChange={this.onChange}
-                    onKeyDown={this.onKeyDown}
                     />
             </ModalForm>
         </div>;
     }
 }
 
-export default AddNoteForm;
+export default reduxForm({
+    form: "newNote"
+})(AddNoteForm);

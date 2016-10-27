@@ -37,12 +37,16 @@ class TeamPage extends React.Component {
         const {team, notes, schema, onNoteAdd, onNoteDelete, onPropsEdit} = this.props;
 
         if (typeof team === "undefined" || typeof schema === "undefined") return <span>Loading...</span>;
+
+        let initialTeamProps = {};
+        team.robot_props.forEach((p) => initialTeamProps[p.name] = p.value);
+
         return <div>
             <h3>{team.license}</h3>
             {team.name}
             <br/>
             <PropertiesList teamProps={team.robot_props}/>
-            <EditPropertiesForm schema={schema} teamProps={team.robot_props} onSubmit={onPropsEdit}/>
+            <EditPropertiesForm schema={schema} initialValues={initialTeamProps} onSubmit={onPropsEdit}/>
             <AddNoteForm onSubmit={onNoteAdd}/>
             <NoteList notes={notes} onDelete={onNoteDelete}/>
         </div>;

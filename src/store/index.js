@@ -3,6 +3,8 @@ import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {browserHistory} from "react-router";
 import {routerReducer, routerMiddleware, syncHistoryWithStore} from "react-router-redux";
+import {reducer as formReducer} from "redux-form";
+import throttle from "lodash/throttle";
 import {loadState, saveState} from "./localStorage";
 import {apiMiddleware} from "../middleware/api";
 import auth from "../ducks/auth";
@@ -20,18 +22,19 @@ const store = createStore(
         entities,
         messages,
         schemaBuilder,
-        routing: routerReducer
+        routing: routerReducer,
+        form: formReducer
     }),
     loadState(),
     composeWithDevTools(applyMiddleware(thunk, apiMiddleware, routerMiddleware(browserHistory)))
 );
 
-store.subscribe(() => {
+store.subscribe(throttle(() => {
     const state = store.getState();
     saveState({
         auth: state.auth
     });
-});
+}, 1000));
 
 const history = syncHistoryWithStore(browserHistory, store);
 
