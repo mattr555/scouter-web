@@ -1,24 +1,23 @@
 import React from "react";
-import {FormGroup, FormControl, Button, Alert} from "react-bootstrap";
+import {Button, Alert} from "react-bootstrap";
 import {connect} from "react-redux";
+import {Field, reduxForm, SubmissionError} from "redux-form";
 import {push} from "react-router-redux";
+import {FieldGroup} from "components/common";
 import {login} from "ducks/auth";
 
 require("style/login.scss");
 
 class Login extends React.Component {
-    // TODO: convert to redux-form
     static propTypes = {
         onSubmit: React.PropTypes.func,
         onSuccess: React.PropTypes.func,
         auth: React.PropTypes.object,
-        location: React.PropTypes.object
+        location: React.PropTypes.object,
+        handleSubmit: React.PropTypes.func,
+        change: React.PropTypes.func,
+        error: React.PropTypes.string
     };
-
-    state = {
-        username: "",
-        password: ""
-    }
 
     nextLoc = () => (this.props.location.query.next || "/")
 
@@ -30,35 +29,22 @@ class Login extends React.Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onSubmit(this.state.username, this.state.password)
+        this.props.handleSubmit(event)
             .then(() => this.props.onSuccess(this.nextLoc()));
-        this.setState({password: ""});
+        this.props.change("password", "");
     }
 
-    handleUsernameChange = (e) => this.setState({username: e.target.value})
-    handlePasswordChange = (e) => this.setState({password: e.target.value})
-
     render() {
-        const error = this.props.auth.error;
-        var err_msg;
-        if (error && error.response && error.response.status === 401) {
-            err_msg = <Alert bsStyle="warning">Invalid username/password</Alert>;
-        } else if (error && error.message) {
-            err_msg = <Alert bsStyle="warning">{error.message}</Alert>;
-        }
+        const {error} = this.props;
 
         return (
             <div className="container">
                 <form className="form-login" onSubmit={this.onSubmit}>
                     <h3>Please log in</h3>
-                    <FormGroup>
-                        <FormControl type="text" placeholder="Username" value={this.state.username} onChange={this.handleUsernameChange}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <FormControl type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                    </FormGroup>
+                    <Field component={FieldGroup} name="username" placeholder="Username" type="text" />
+                    <Field component={FieldGroup} name="password" placeholder="Password" type="password" />
                     <Button type="submit" bsStyle="primary">Login</Button>
-                    {err_msg}
+                    {error && <Alert bsStyle="danger">{error}</Alert>}
                 </form>
             </div>
         );
@@ -68,8 +54,21 @@ class Login extends React.Component {
 const mapStateToProps = ({auth}) => ({auth});
 
 const mapDispatchToProps = (dispatch) => ({
-    onSubmit: (username, password) => dispatch(login(username, password)),
+    onSubmit: ({username, password}) => {
+        return dispatch(login(username, password))
+            .catch(err => {
+                if (err.response && err.response.status === 401){
+                    throw new SubmissionError({password: "Invalid username/password"});
+                } else if(err.message) {
+                    throw new SubmissionError({_error: err.message});
+                }
+            });
+    },
     onSuccess: (nextPath) => dispatch(push(nextPath))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(reduxForm({
+    form: "login"
+})(Login));

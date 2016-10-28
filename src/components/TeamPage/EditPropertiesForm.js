@@ -53,7 +53,7 @@ class EditPropertiesForm extends React.Component {
                 return <div key={s.name}>
                     <label className="block-label">{s.name}</label>
                     {["Bad", "Meh", "Good"].map((val) => (
-                        <label key={val}><Field
+                        <label className="radio-inline" key={val}><Field
                             component="input"
                             type="radio"
                             name={s.name}

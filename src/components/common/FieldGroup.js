@@ -1,13 +1,15 @@
 import React from "react";
 import {FormGroup, ControlLabel, FormControl, HelpBlock} from "react-bootstrap";
 
-const FieldGroup = ({input, id, label, help, children, ...props}) => {
-    return <FormGroup controlId={id}>
-        <ControlLabel>{label}</ControlLabel>
+const FieldGroup = ({input, meta, id, label, help, children, ...props}) => {
+    const valClass = meta.touched && meta.error && "error" || undefined;
+    return <FormGroup controlId={id} validationState={valClass}>
+        {label && <ControlLabel>{label}</ControlLabel>}
         <FormControl value={input.value} onChange={input.onChange} {...props}>
             {children}
         </FormControl>
         {help && <HelpBlock>{help}</HelpBlock>}
+        {meta.touched && meta.error && <HelpBlock>{meta.error}</HelpBlock>}
     </FormGroup>;
 };
 

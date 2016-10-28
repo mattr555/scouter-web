@@ -52,5 +52,9 @@ class AddNoteForm extends React.Component {
 }
 
 export default reduxForm({
-    form: "newNote"
+    form: "newNote",
+    validate: (values) => {
+        if (!values.body) return {body: "Required."};
+        return {};
+    }
 })(AddNoteForm);
