@@ -30,11 +30,10 @@ class SettingsPage extends React.Component {
 }
 
 // TODO: client side validation
-const mapStateToProps = ({entities, user, schemaBuilder}) => {
+const mapStateToProps = ({entities, user}) => {
     const denormUser = entities.user[user.user];
     return {
         user: denormUser,
-        schema: schemaBuilder,
         initialValues: denormUser
     };
 };

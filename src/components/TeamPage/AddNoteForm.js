@@ -45,6 +45,7 @@ class AddNoteForm extends React.Component {
                     label="Note body"
                     componentClass="textarea"
                     name="body"
+                    onKeyDown={this.onKeyDown}
                     />
             </ModalForm>
         </div>;

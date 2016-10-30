@@ -11,6 +11,12 @@ const renderField = ({input, children, meta, ...rest}) => {
     </FormControl>;
 };
 
+renderField.propTypes = {
+    input: React.PropTypes.object,
+    children: React.PropTypes.node,
+    meta: React.PropTypes.object
+};
+
 class SchemaBuilder extends React.Component {
     // TODO: convert this to redux-form with FieldArray (should make schemaBuilder duck obsolete)
     static propTypes = {

@@ -53,15 +53,17 @@ class TeamPage extends React.Component {
     }
 }
 
-const mapStateToProps = ({entities, schemaBuilder}, ownProps) => {
-    var team = entities.team[ownProps.params.id], notes;
+const mapStateToProps = ({entities, user}, ownProps) => {
+    var team = entities.team[ownProps.params.id],
+        denormUser = entities.user[user.user] || {},
+        notes;
     if (team) {
         notes = team.notes.map((i) => entities.note[i]);
     }
     return {
         team: team,
         notes: notes,
-        schema: schemaBuilder
+        schema: denormUser.robot_fields
     };
 };
 
@@ -76,7 +78,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onNoteAdd: (note) => {
             return dispatch(addNote({...note, team: ownProps.params.id}))
                 .then(_getTeam);
-
         },
         onNoteDelete: (note) => {
             return dispatch(deleteNote(note))
