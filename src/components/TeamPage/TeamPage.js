@@ -39,7 +39,7 @@ class TeamPage extends React.Component {
         if (typeof team === "undefined" || typeof schema === "undefined") return <span>Loading...</span>;
 
         let initialTeamProps = {};
-        team.robot_props.forEach((p) => initialTeamProps[p.name] = p.value);
+        if (team.robot_props) team.robot_props.forEach((p) => initialTeamProps[p.name] = p.value);
 
         return <div>
             <h3>{team.license}</h3>

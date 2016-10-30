@@ -1,32 +1,68 @@
 import React from "react";
-import {Table, Button} from "react-bootstrap";
+import {Table, Button, FormControl, Glyphicon} from "react-bootstrap";
 import {connect} from "react-redux";
-import SchemaBuilderRow from "./SchemaBuilderRow";
-import {changeField, deleteField, addField, moveFieldUp, moveFieldDown} from "ducks/schemaBuilder";
+import {Field, getFormValues} from "redux-form";
+
+const disabledStyle = {opacity: 0};
+
+const renderField = ({input, children, meta, ...rest}) => {
+    return <FormControl value={input.value} onChange={input.onChange} {...rest}>
+        {children}
+    </FormControl>;
+};
 
 class SchemaBuilder extends React.Component {
     // TODO: convert this to redux-form with FieldArray (should make schemaBuilder duck obsolete)
     static propTypes = {
-        schema: React.PropTypes.array,
-        onFieldChange: React.PropTypes.func,
-        onFieldDelete: React.PropTypes.func,
-        onFieldAdd: React.PropTypes.func,
-        onFieldUp: React.PropTypes.func,
-        onFieldDown: React.PropTypes.func
+        fields: React.PropTypes.any,
+        values: React.PropTypes.object
     }
 
     render() {
-        var rows = this.props.schema.map((r, i) => (
-            <SchemaBuilderRow
-                key={r.id}
-                data={r}
-                onChange={this.props.onFieldChange}
-                onDelete={this.props.onFieldDelete}
-                onUp={this.props.onFieldUp}
-                onDown={this.props.onFieldDown}
-                top={i === 0}
-                bottom={i === this.props.schema.length - 1} />
-        ));
+        const {fields, values} = this.props;
+
+        var rows = fields.map((r, i) => {
+            var optionSelect = "n/a";
+            if (values.robot_fields[i].type === "option") {
+                optionSelect = <Field
+                    type="text"
+                    component={renderField}
+                    name={`${r}.options`}
+                    placeholder="comma separated"
+                    format={(v) => v.join(",")}
+                    parse={(v) => v.split(",")}
+                    />;
+            }
+
+            var top = i === 0;
+            var bottom = i === fields.length - 1;
+            return <tr key={i}>
+                <td>
+                    <Field
+                        type="text"
+                        component={renderField}
+                        name={`${r}.name`}/>
+                </td>
+                <td>
+                    <Field
+                        component={renderField}
+                        componentClass="select"
+                        name={`${r}.type`}>
+                        <option value="number">Number</option>
+                        <option value="option">Option</option>
+                        <option value="badgood">Bad / Meh / Good</option>
+                    </Field>
+                </td>
+                <td>
+                    {optionSelect}
+                </td>
+                <td>
+                    <Button bsSize="xsmall" bsStyle="danger" onClick={() => fields.remove(i)}><Glyphicon glyph="trash"/></Button>
+                    <Button bsSize="xsmall" bsStyle="link" onClick={() => fields.swap(i, i-1)} disabled={top} style={top && disabledStyle || {}}><Glyphicon glyph="chevron-up"/></Button>
+                    <Button bsSize="xsmall" bsStyle="link" onClick={() => fields.swap(i, i+1)} disabled={bottom} style={bottom && disabledStyle || {}}><Glyphicon glyph="chevron-down"/></Button>
+                </td>
+            </tr>;
+        });
 
         return <div>
             <Table>
@@ -42,19 +78,11 @@ class SchemaBuilder extends React.Component {
                     {rows}
                 </tbody>
             </Table>
-            <Button onClick={this.props.onFieldAdd} bsStyle="success">Add</Button>
+            <Button onClick={() => fields.push({type: "number"})} bsStyle="success">Add</Button>
         </div>;
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onFieldChange: (field) => dispatch(changeField(field)),
-        onFieldDelete: (id) => dispatch(deleteField(id)),
-        onFieldAdd: () => dispatch(addField()),
-        onFieldUp: (id) => dispatch(moveFieldUp(id)),
-        onFieldDown: (id) => dispatch(moveFieldDown(id))
-    };
-};
-
-export default connect(null, mapDispatchToProps)(SchemaBuilder);
+export default connect(state => ({
+    values: getFormValues("userSettings")(state)
+}))(SchemaBuilder);
